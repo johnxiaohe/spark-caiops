@@ -15,12 +15,12 @@ const Versions = ({moduleName}) => {
             key:1,
             name:moduleName,
             desc:moduleName,
-            updateUser:"reuben",
-            updateUid:'1',
-            utime:"123",
+            uName:"reuben",
+            uPid:'1',
+            uTime:"123",
             size:123,
-            ctime: '123',
-            createUid:1,
+            cTime: '123',
+            cPid:1,
         }]
         setList(list)
     },[])
@@ -51,22 +51,22 @@ const Versions = ({moduleName}) => {
         {
             title: '创建时间',
             dataIndex: 'ctime',
-            key: 'ctime',
+            key: 'cTime',
         },
         {
             title: '创建人',
             dataIndex: 'createUser',
-            key: 'createUid',
+            key: 'cPid',
         },
         {
             title: '更新人',
             dataIndex: 'updateUser',
-            key:'updateUid',
+            key:'uPid',
         },
         {
             title: '更新时间',
             dataIndex: 'utime',
-            key: 'utime',
+            key: 'uTime',
         },
         {
             title:'wasm-size',

@@ -6,6 +6,7 @@ import './tailwind.css'
 import ModuleManage from './pages/modulemanage'
 import AdminManage from './pages/adminmanage'
 import { Button } from 'antd'
+import { useAuth } from './provider/auth'
 
 function BarLi({click,name,focus}){
 
@@ -35,25 +36,15 @@ function App() {
   const [moduleLis, setModuleLis] = useState([])
   const [current, setCurrent] = useState("模块管理")
   const [rightBody, setRightBody] = useState("")
-  const [isLogin, setIsLogin] = useState(false)
-  const [username, setUsername] = useState('reuben')
-  const [pid, setPid] = useState('aaaa-aaa')
+  const {login, isLogin, pid} = useAuth()
 
   const onClickBar = (name) => {
     setCurrent(name)
   }
 
   useEffect(() => {
-    // let moduleLis = modules.map(name => {
-    //   let fcs = false;
-    //   if (name === current){
-    //     fcs = true;
-    //   }
-    //   return (
-    //     <BarLi click={() => {onClickBar(name)}} name={name} focus={fcs}></BarLi>
-    // )})
-    // setModuleLis(moduleLis)
-  }, [])
+    console.log(isLogin)
+  }, [isLogin])
 
   useEffect(() =>{ 
     let moduleLis = modules.map(name => {
@@ -83,11 +74,10 @@ function App() {
         <div className='mx-auto m-10 py-0.5 w-4/5 h-15'>
           {isLogin?
             <div>
-              <h1>{username}</h1>
-              <p>{pid}</p>
+              <h1>{pid}</h1>
             </div> 
             : 
-            <Button type='primary'>login</Button>}
+            <Button type='primary' onClick={login}>login</Button>}
         </div>
         <div className='w-full h-3/5 text-center'>
           <ul className='w-full h-30 my-20 pl-5'>

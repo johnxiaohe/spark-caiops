@@ -1,0 +1,48 @@
+type Time = int;
+type Member = 
+ record {
+   cPid: text;
+   cTime: Time;
+   name: text;
+   pid: text;
+ };
+type CaiVersion = 
+ record {
+   cName: text;
+   cPid: text;
+   cTime: Time;
+   desc: text;
+   name: text;
+   size: nat;
+   uName: text;
+   uPid: text;
+   uTime: Time;
+   wasm: vec nat8;
+ };
+type CaiModule = 
+ record {
+   desc: text;
+   isChild: bool;
+   name: text;
+   parentModule: text;
+ };
+service : {
+  addAdmins: (text, text) -> ();
+  addCanister: (text, text) -> ();
+  addCanisterByAdmin: (text, text) -> (bool);
+  addOrUpdateModule: (CaiModule) -> ();
+  addVersion: (text, CaiVersion) -> ();
+  admin: () -> (bool);
+  adminList: () -> (vec Member);
+  canisters: (text) -> (vec text);
+  delCanister: (text, text) -> ();
+  delCanisterByAdmin: (text, text) -> (bool);
+  delModule: (text) -> ();
+  initChilds: (text) -> ();
+  modules: () -> (vec CaiModule);
+  setCaiDesc: (text, text) -> ();
+  setCaiTags: (text, vec text) -> ();
+  updateAllCais: (text, text) -> (bool);
+  updateTargetCais: (text, text, vec text) -> (bool);
+  versions: (text) -> (vec CaiVersion);
+}
