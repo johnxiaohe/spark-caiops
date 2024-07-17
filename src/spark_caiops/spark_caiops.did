@@ -32,7 +32,7 @@ service : {
   addCanisterByAdmin: (text, text) -> (bool);
   addOrUpdateModule: (CaiModule) -> ();
   addVersion: (text, CaiVersion) -> ();
-  admin: () -> (bool);
+  checkAdmin: () -> (bool);
   adminList: () -> (vec Member);
   canisters: (text) -> (vec text);
   delCanister: (text, text) -> ();

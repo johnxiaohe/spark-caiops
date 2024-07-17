@@ -33,7 +33,7 @@ export interface _SERVICE {
   'addCanisterByAdmin' : ActorMethod<[string, string], boolean>,
   'addOrUpdateModule' : ActorMethod<[CaiModule], undefined>,
   'addVersion' : ActorMethod<[string, CaiVersion], undefined>,
-  'admin' : ActorMethod<[], boolean>,
+  'checkAdmin' : ActorMethod<[], boolean>,
   'adminList' : ActorMethod<[], Array<Member>>,
   'canisters' : ActorMethod<[string], Array<string>>,
   'delCanister' : ActorMethod<[string, string], undefined>,

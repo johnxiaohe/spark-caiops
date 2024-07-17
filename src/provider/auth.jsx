@@ -55,12 +55,13 @@ export const AuthProvider = ({children}) =>{
         setPid(_principalId)
         console.log(_principalId)
         
-        const actor = createActor("bkyz2-fmaaa-aaaaa-qaaaq-cai", {agent})
-        const result = await actor.admin()
+        const actor = createActor({agent})
+        setMainActor(actor)
+        const result = await actor.checkAdmin()
         console.result(result)
 
         // todo: init userinfo
-        setIsLogin(true)
+        setIsLogin(result)
     }
 
     const login = async () => {

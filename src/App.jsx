@@ -34,7 +34,7 @@ function App() {
   // const [count, setCount] = useState(0)
   const [modules, setModules] = useState(["模块管理","成员管理"])
   const [moduleLis, setModuleLis] = useState([])
-  const [current, setCurrent] = useState("模块管理")
+  const [current, setCurrent] = useState("请登录")
   const [rightBody, setRightBody] = useState("")
   const {login, isLogin, pid} = useAuth()
 
@@ -44,6 +44,9 @@ function App() {
 
   useEffect(() => {
     console.log(isLogin)
+    if(isLogin){
+      setCurrent("模块管理")
+    }
   }, [isLogin])
 
   useEffect(() =>{ 
@@ -59,6 +62,10 @@ function App() {
     }
     if(current === "成员管理"){
       setRightBody(<AdminManage></AdminManage>)
+      return
+    }
+    if(current === "请登录"){
+      setRightBody(<p>请登录</p>)
       return
     }
   }, [current])

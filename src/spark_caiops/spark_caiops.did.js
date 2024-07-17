@@ -30,7 +30,7 @@ export const idlFactory = ({ IDL }) => {
     'addCanisterByAdmin' : IDL.Func([IDL.Text, IDL.Text], [IDL.Bool], []),
     'addOrUpdateModule' : IDL.Func([CaiModule], [], []),
     'addVersion' : IDL.Func([IDL.Text, CaiVersion], [], []),
-    'admin' : IDL.Func([], [IDL.Bool], []),
+    'checkAdmin' : IDL.Func([], [IDL.Bool], []),
     'adminList' : IDL.Func([], [IDL.Vec(Member)], []),
     'canisters' : IDL.Func([IDL.Text], [IDL.Vec(IDL.Text)], []),
     'delCanister' : IDL.Func([IDL.Text, IDL.Text], [], []),
