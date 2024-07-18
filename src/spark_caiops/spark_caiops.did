@@ -34,7 +34,7 @@ service : {
   addVersion: (text, CaiVersion) -> ();
   adminList: () -> (vec Member);
   canisters: (text) -> (vec text);
-  checkAdmin: () -> (bool);
+  checkAdmin: () -> (text);
   delCanister: (text, text) -> ();
   delCanisterByAdmin: (text, text) -> (bool);
   delModule: (text) -> ();

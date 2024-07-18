@@ -29,7 +29,7 @@ const AuthContext = React.createContext()
 export const AuthProvider = ({children}) =>{
     const [isLogin, setIsLogin] = useState(false)
     const [pid, setPid] = useState('')
-    // const [username, setUserName] = useState({})
+    const [username, setUserName] = useState('')
 
     const [agent, setAgent] = useState(null)
     const [authClient, setAuthClient] = useState(null)
@@ -49,19 +49,23 @@ export const AuthProvider = ({children}) =>{
     const handleAuthenticated = async (authClient) => {
         console.log('handleAuthenticated========')
         const identity = authClient.getIdentity()
-        const agent = new HttpAgent({host:"http://127.0.0.1:8080", identity: identity})
+        const agent = new HttpAgent({host:process.env.HOST, identity: identity})
         setAgent(agent)
         const _principalId = identity.getPrincipal().toText()
         setPid(_principalId)
         console.log(_principalId)
         
-        const actor = createActor('bkyz2-fmaaa-aaaaa-qaaaq-cai', {agent})
+        const actor = createActor(process.env.CANISTER_ID_SPARK_CAIOPS, {agent})
         setMainActor(actor)
-        const result = await actor.checkAdmin()
-        console.log(result)
-
+        const name = await actor.checkAdmin()
+        if (name != "") {
         // todo: init userinfo
-        setIsLogin(result)
+          setIsLogin(true)
+          setUserName(name)
+        }else{
+          setIsLogin(false)
+          setUserName("不是管理员")
+        }
     }
 
     const login = async () => {
@@ -79,7 +83,7 @@ export const AuthProvider = ({children}) =>{
                 login,
                 isLogin,
                 pid,
-                // username,
+                username,
                 mainActor,
             }}
         >

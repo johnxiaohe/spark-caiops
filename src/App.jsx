@@ -7,6 +7,10 @@ import ModuleManage from './pages/modulemanage'
 import AdminManage from './pages/adminmanage'
 import { Button } from 'antd'
 import { useAuth } from './provider/auth'
+import {
+  CopyOutlined,
+} from '@ant-design/icons'
+import copy from 'copy-to-clipboard'
 
 function BarLi({click,name,focus}){
 
@@ -36,14 +40,13 @@ function App() {
   const [moduleLis, setModuleLis] = useState([])
   const [current, setCurrent] = useState("请登录")
   const [rightBody, setRightBody] = useState("")
-  const {login, isLogin, pid} = useAuth()
+  const {login, isLogin, pid,username} = useAuth()
 
   const onClickBar = (name) => {
     setCurrent(name)
   }
 
   useEffect(() => {
-    console.log(isLogin)
     if(isLogin){
       setCurrent("模块管理")
       setModules(["模块管理","成员管理"])
@@ -66,7 +69,7 @@ function App() {
       return
     }
     if(current === "请登录"){
-      setRightBody(<p>请登录</p>)
+      setRightBody(<p>请登录/联系管理员添加至管理再登陆</p>)
       return
     }
   }, [current])
@@ -81,8 +84,16 @@ function App() {
         </div>
         <div className='mx-auto m-10 py-0.5 w-4/5 h-15'>
           {isLogin?
-            <div>
-              <h1>{pid}</h1>
+            <div className="flex justify-center">
+              <h1>{username}</h1>
+              <Button
+                type="link"
+                onClick={() => {
+                  copy(pid)
+                }}
+                icon={<CopyOutlined />}
+              />
+
             </div> 
             : 
             <Button type='primary' onClick={login}>login</Button>}

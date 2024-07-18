@@ -35,7 +35,7 @@ export interface _SERVICE {
   'addVersion' : ActorMethod<[string, CaiVersion], undefined>,
   'adminList' : ActorMethod<[], Array<Member>>,
   'canisters' : ActorMethod<[string], Array<string>>,
-  'checkAdmin' : ActorMethod<[], boolean>,
+  'checkAdmin' : ActorMethod<[], string>,
   'delCanister' : ActorMethod<[string, string], undefined>,
   'delCanisterByAdmin' : ActorMethod<[string, string], boolean>,
   'delModule' : ActorMethod<[string], undefined>,
