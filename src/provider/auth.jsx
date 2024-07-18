@@ -49,16 +49,16 @@ export const AuthProvider = ({children}) =>{
     const handleAuthenticated = async (authClient) => {
         console.log('handleAuthenticated========')
         const identity = authClient.getIdentity()
-        const agent = new HttpAgent({ identity })
+        const agent = new HttpAgent({host:"http://127.0.0.1:8080", identity: identity})
         setAgent(agent)
         const _principalId = identity.getPrincipal().toText()
         setPid(_principalId)
         console.log(_principalId)
         
-        const actor = createActor({agent})
+        const actor = createActor('bkyz2-fmaaa-aaaaa-qaaaq-cai', {agent})
         setMainActor(actor)
         const result = await actor.checkAdmin()
-        console.result(result)
+        console.log(result)
 
         // todo: init userinfo
         setIsLogin(result)

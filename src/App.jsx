@@ -32,7 +32,7 @@ function BarLi({click,name,focus}){
 
 function App() {
   // const [count, setCount] = useState(0)
-  const [modules, setModules] = useState(["模块管理","成员管理"])
+  const [modules, setModules] = useState(["请登录"])
   const [moduleLis, setModuleLis] = useState([])
   const [current, setCurrent] = useState("请登录")
   const [rightBody, setRightBody] = useState("")
@@ -46,6 +46,7 @@ function App() {
     console.log(isLogin)
     if(isLogin){
       setCurrent("模块管理")
+      setModules(["模块管理","成员管理"])
     }
   }, [isLogin])
 
