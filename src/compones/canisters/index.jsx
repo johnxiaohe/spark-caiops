@@ -1,4 +1,4 @@
-import { Table,Button } from "antd"
+import { Table,Button,Space } from "antd"
 import { useEffect, useState } from "react"
 
 // 展示当前模块的所有canisters, 由前端拉取canisters的版本号。

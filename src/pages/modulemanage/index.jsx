@@ -5,10 +5,11 @@ import ModuleInfo from '../../compones/moduleinfo'
 import Versions from '../../compones/versions'
 import NewVersion from '../../compones/versions/newversion';
 import Canisters from '../../compones/canisters';
+import { useAuth } from '../../provider/auth';
 
 const ModuleManage = () => {
-    const [modulenames, setModuleNames] = useState(['模块1', '模块2'])
-    const [currentModule, setCurrentModule] = useState('模块1')
+    const [modules, setModules] = useState([])
+    const [currentModule, setCurrentModule] = useState({})
 
     // const [actions, setActions] = useState(['模块信息','版本列表','容器列表'])
     const [actions, setActions] = useState(['模块信息','版本列表','容器列表'])
@@ -22,21 +23,36 @@ const ModuleManage = () => {
     const [open, setOpen] = useState(false);
     const [newVersion, setNewVersion] = useState(false);
 
+    const {mainActor} = useAuth()
+
+    const initModules = async() => {
+        const newModules = await mainActor.modules()
+        setModules(newModules)
+        if (newModules.length > 0){
+            setCurrentModule(newModules[0])
+        }
+        setOpen(false)
+    }
+
+    const resetSelecter = () =>{
+        let items = modules.map(item =>{
+            return {
+                key: item.name,
+                label: item.name,
+                disabled: currentModule.name === item.name
+            }
+        })
+        setItems(items)
+    }
+
     useEffect(()=>{
         // init modulenames
-
+        initModules()
     }, [])
 
     useEffect(()=>{
         // init modules selecter
-        let items = modulenames.map(name =>{
-            return {
-                key: name,
-                label: name,
-                disabled: currentModule === name
-            }
-        })
-        setItems(items)
+        resetSelecter()
 
         // init action bar
         let menus = actions.map(menu => {
@@ -47,26 +63,27 @@ const ModuleManage = () => {
             }
         })
         setMenus(menus)
-    }, [modulenames])
+    }, [modules])
 
     useEffect(()=>{
         // reset module selector
-        let items = modulenames.map(name =>{
-            return {
-                key: name,
-                label: name,
-                disabled: currentModule === name
-            }
-        })
-        setItems(items)
+        resetSelecter() 
+
         // reset action
-        setCurrentAction('容器列表')
+        setCurrentAction('模块信息')
     }, [currentModule])
 
     useEffect(()=>{
+        
         // reset content
         if(currentAction === '模块信息'){
-            setContent(<ModuleInfo moduleNam={currentModule} modules={modulenames} createing={false}></ModuleInfo>)
+            if (modules.length == 0){
+                setContent(<p >请先添加模块</p>)
+            }else{
+                console.log("====")
+                console.log(currentModule)
+                setContent(<ModuleInfo currentModule={currentModule} modules={modules} createing={false} reset={initModules}></ModuleInfo>)
+            }
             return
         }
         if(currentAction === '版本列表'){
@@ -78,13 +95,18 @@ const ModuleManage = () => {
             return
         }
         
-    }, [currentModule, currentAction])
+    }, [currentModule,currentAction])
 
     const menuClick = (e) => {
         setCurrentAction(e.key)
     }
     const moduleClick = (e) => {
-        setCurrentModule(e.key)
+        modules.forEach(item => {
+            if (item.name === e.key){
+                setCurrentModule(item)
+            }
+        })
+        
     }
     const handleCreate = () => {
         setOpen(true)
@@ -118,7 +140,7 @@ const ModuleManage = () => {
             <Dropdown menu={{items,onClick:moduleClick}} icon={<DownOutlined />} className='basis-1/6 text-l mt-0.5 ml-3 pt-1'>
                 <Button icon={<DownOutlined />} iconPosition='end'>
                     <Space>
-                        {currentModule}
+                        {currentModule.name}
                     </Space>
                 </Button>
             </Dropdown>
@@ -136,7 +158,7 @@ const ModuleManage = () => {
             </div>
           </div>
           <Drawer title="新增模块" onClose={handleCreateClose} open={open}>
-            <ModuleInfo moduleNam={''} modules={modulenames} createing={true}></ModuleInfo>
+            <ModuleInfo currentModule={currentModule} modules={modules} createing={true} reset={initModules}></ModuleInfo>
           </Drawer>
           <Drawer title="新增版本" onClose={handleVersionClose} open={newVersion}>
                 <NewVersion moduleName={currentModule} update={false} versionInfo={{}}></NewVersion>

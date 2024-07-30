@@ -1,11 +1,13 @@
 import { Form,Input,Button } from "antd"
 import { useEffect,useState } from "react"
+import { useAuth } from "../../provider/auth"
 
 
-const AddUser = () => {
+const AddUser = ({close}) => {
 
     const [form] = Form.useForm()
     const [submiting, setSubmiting] = useState(false)
+    const {pid, mainActor} = useAuth()
 
     const formItemLayout = {
         labelCol: {
@@ -26,9 +28,15 @@ const AddUser = () => {
         },
     }
 
-    const handleSubmit = () =>{
+    const handleSubmit = (value) =>{
         setSubmiting(true)
-        console.log(currentFile)
+    }
+
+    const handleFinish = async (values) => {
+        await mainActor.addAdmins(values.name, values.pid)
+        setSubmiting(false)
+        
+        close()
     }
 
     return (
@@ -37,13 +45,12 @@ const AddUser = () => {
         {...formItemLayout}
         form={form}
         style={{maxWidth:600,}}
+        onFinish={handleFinish}
         >
-            <Form.Item 
-            label="成员名" name="name" resules={[{required:true}]}>
+            <Form.Item label="成员名" name="name" resules={[{required:true}]}>
                 <Input />
             </Form.Item>
-            <Form.Item
-            label="principal" name="principal" resules={[{required:true}]}>
+            <Form.Item label="principal" name="pid" resules={[{required:true}]}>
                 <Input />
             </Form.Item>
             <Form.Item

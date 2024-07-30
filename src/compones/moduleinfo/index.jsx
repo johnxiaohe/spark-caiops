@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react"
 import { Switch,Form,Input,Select,Button } from 'antd';
+import { useAuth } from "../../provider/auth";
 
 
 // name,desc,parentmodule,ischild
-const ModuleInfo = ({moduleNam, modules,createing}) => {
+const ModuleInfo = ({currentModule, modules,createing, reset}) => {
     const [info, setInfo] = useState({})
     const [parents, setParents] = useState({})
     const [defaultParent, setDefaultParent] = useState('')
@@ -14,6 +15,8 @@ const ModuleInfo = ({moduleNam, modules,createing}) => {
 
     const [updateing, setUpdateing] = useState(false)
     const [submiting, setSubmiting] = useState(false)
+
+    const {mainActor} = useAuth()
 
     const formItemLayout = {
         labelCol: {
@@ -35,41 +38,48 @@ const ModuleInfo = ({moduleNam, modules,createing}) => {
     }
 
     useEffect(() =>{
-        let info = {
-            name: "模块1",
-            desc: "模块描述",
-            isChild: false,
-            parentModule: "模块1"
+        // console.log(currentModule)
+        if(!createing && modules.length > 0){
+            console.log("init update module info")
+            setIsChild(currentModule.isChild)
+            setInfo(currentModule)
         }
-        setIsChild(false)
-        setInfo(info)
 
-        let parentSelects = modules.map(name =>{
+        let parentSelects = modules.map(item =>{
             return {
-                value: name,
-                label: name,
+                value: item.name,
+                label: item.name,
             }
         })
         setParents(parentSelects)
 
-        if (info.parentModule != ""){
-            setDefaultParent({value:info.parentModule, label:info.parentModule})
-        }
-
-        form.setFieldsValue({
-            name: info.name,
-            desc: info.desc,
-            isChild: info.isChild,
-            parentModule: info.parentModule
-        })
     },[])
 
     useEffect(()=>{
-        console.log(isChild)
-    }, [isChild])
+        // console.log(isChild)
+        form.setFieldsValue({
+            name: info.name,
+            desc: info.desc,
+            isChild: info.isChild || false,
+            parentModule: info.parentModule || ''
+        })
+        if (info.parentModule != ""){
+            setDefaultParent({value:info.parentModule, label:info.parentModule})
+        }
+    }, [info])
 
     const handleUpdate = () =>{
         setUpdateing(!updateing)
+        console.log(form)
+        if(updateing){
+            form.setFieldsValue({
+                name: info.name,
+                desc: info.desc,
+                isChild: info.isChild,
+                parentModule: info.parentModule
+            })
+            setIsChild(info.isChild)
+        }
     }
 
     const handleSubmit = () =>{
@@ -81,13 +91,14 @@ const ModuleInfo = ({moduleNam, modules,createing}) => {
     const handleSelect = (value)=>{
         console.log(value)
     }
-    const onFinish = (values) => {
+    const onFinish = async (values) => {
         console.log(values);
-        if(createing){
-
-        }else{
-            
+        if (values.parentModule == undefined || values.isChild == false){
+            values.parentModule = ""
         }
+        await mainActor.addOrUpdateModule(values)
+        await reset()
+        setSubmiting(false)
     };
 
     return (
@@ -100,19 +111,26 @@ const ModuleInfo = ({moduleNam, modules,createing}) => {
         >
             <Form.Item 
             label="name" name="name" resules={[{required:true,message:"module name"}]}>
-                <Input />
+                {createing || updateing?<Input />:<Input disabled />}
             </Form.Item>
             <Form.Item 
             label="decription" name="desc" resules={[{required:true,message:"module description"}]}>
-                <Input.TextArea/>
+                {createing || updateing?<Input.TextArea/>:<Input.TextArea disabled/>}
             </Form.Item>
             <Form.Item label="isChild" name="isChild" valuePropName="checked" initialValue={isChild}>
-                <Switch value={isChild} onClick={handleChildSwitch}/>
+                {createing || updateing ? 
+                    <Switch value={isChild} onClick={handleChildSwitch}/>
+                    :
+                    <Switch value={isChild} onClick={handleChildSwitch} disabled/>}
             </Form.Item>
             {isChild ? 
                 <Form.Item
                 label="parentModule" name="parentModule" resules={[{required:false}]} initialValue={defaultParent}>
-                    <Select onChange={handleSelect} options={parents}></Select>
+                    {createing || updateing?
+                        <Select onChange={handleSelect} options={parents}></Select>
+                        :
+                        <Select onChange={handleSelect} options={parents} disabled></Select>
+                    }
                 </Form.Item> 
                 :
                 <></>
@@ -129,9 +147,15 @@ const ModuleInfo = ({moduleNam, modules,createing}) => {
                     :
                     <></>
                 }
-                <Button type="primary" onClick={handleSubmit} loading={submiting} htmlType="submit">
-                    Submit
-                </Button>
+                {createing || updateing?
+                    <Button type="primary" onClick={handleSubmit} loading={submiting} htmlType="submit">
+                        Submit
+                    </Button>
+                    :
+                    <Button type="primary" onClick={handleSubmit} loading={submiting} htmlType="submit" disabled>
+                        Submit
+                    </Button>
+                }
             </Form.Item>
         </Form>
         </>

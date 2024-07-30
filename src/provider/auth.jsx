@@ -58,6 +58,7 @@ export const AuthProvider = ({children}) =>{
         const actor = createActor(process.env.CANISTER_ID_SPARK_CAIOPS, {agent})
         setMainActor(actor)
         const name = await actor.checkAdmin()
+        console.log(name)
         if (name != "") {
         // todo: init userinfo
           setIsLogin(true)
