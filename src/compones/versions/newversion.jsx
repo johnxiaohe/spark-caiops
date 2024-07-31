@@ -1,14 +1,17 @@
 import { Form,Input,Button,Upload } from "antd"
 import { UploadOutlined } from '@ant-design/icons';
 import { useEffect,useState } from "react"
+import { useAuth } from "../../provider/auth";
 
-const NewVersion = ({moduleName, update, versionInfo}) => {
+const NewVersion = ({moduleName, update, versionInfo, callback}) => {
 
     const [form] = Form.useForm()
     const [file, setFile] = useState([]);
     const [wasmData, setWasmData] = useState([]);
     const [submiting, setSubmiting] = useState(false)
     const [currentFile, setCurrentFile] = useState({})
+
+    const { mainActor } = useAuth()
 
     const formItemLayout = {
         labelCol: {
@@ -57,21 +60,41 @@ const NewVersion = ({moduleName, update, versionInfo}) => {
                 desc: versionInfo.desc,
                 wasm: []
             })
+        }else{
+            form.setFieldsValue({
+                name: '',
+                desc: '',
+                wasm: []
+            })
         }
     }, [versionInfo])
 
-    // const onFinish = (values) => {
-    //     // console.log(values);
-    //     if(update){
+    const onFinish = async (values) => {
+        
+        if(update){
+            let wasm = versionInfo.wasm
+            if (wasmData.length > 0){
+                wasm = wasmData
+            }
+            // console.log(wasm)
+            const result = await mainActor.updateVersion(moduleName, versionInfo.id, values.name, values.desc, wasm)
+            if (result != ""){
+                alert("更新失败" + result)
+            }
+        }else{
+            if (wasmData.length < 1){
+                alert("must upload wasm file ")
 
-    //     }else{
-            
-    //     }
-    // }
+            }else{
+                await mainActor.addVersion(moduleName, values.name, values.desc, wasmData)
+            }
+        }
+        setSubmiting(false)
+        callback()
+    }
 
     const handleSubmit = () =>{
         setSubmiting(true)
-        console.log(currentFile)
     }
 
     return (
@@ -79,7 +102,7 @@ const NewVersion = ({moduleName, update, versionInfo}) => {
         {...formItemLayout}
         form={form}
         style={{maxWidth:600,}}
-        // onFinish={onFinish}
+        onFinish={onFinish}
         >
             <Form.Item 
             label="name" name="name" resules={[{required:true}]}>

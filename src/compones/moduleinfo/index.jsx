@@ -5,7 +5,6 @@ import { useAuth } from "../../provider/auth";
 
 // name,desc,parentmodule,ischild
 const ModuleInfo = ({currentModule, modules,createing, reset}) => {
-    const [info, setInfo] = useState({})
     const [parents, setParents] = useState({})
     const [defaultParent, setDefaultParent] = useState('')
 
@@ -37,12 +36,12 @@ const ModuleInfo = ({currentModule, modules,createing, reset}) => {
         },
     }
 
+    // 只会初始化一次
     useEffect(() =>{
         // console.log(currentModule)
         if(!createing && modules.length > 0){
-            console.log("init update module info")
+            // console.log("init update module info")
             setIsChild(currentModule.isChild)
-            setInfo(currentModule)
         }
 
         let parentSelects = modules.map(item =>{
@@ -58,27 +57,28 @@ const ModuleInfo = ({currentModule, modules,createing, reset}) => {
     useEffect(()=>{
         // console.log(isChild)
         form.setFieldsValue({
-            name: info.name,
-            desc: info.desc,
-            isChild: info.isChild || false,
-            parentModule: info.parentModule || ''
+            name: currentModule.name,
+            desc: currentModule.desc,
+            isChild: currentModule.isChild || false,
+            parentModule: currentModule.parentModule || ''
         })
-        if (info.parentModule != ""){
-            setDefaultParent({value:info.parentModule, label:info.parentModule})
+        if (currentModule.parentModule != ""){
+            setDefaultParent({value:currentModule.parentModule, label:currentModule.parentModule})
         }
-    }, [info])
+        setIsChild(currentModule.isChild || false)
+    }, [currentModule])
 
     const handleUpdate = () =>{
         setUpdateing(!updateing)
         console.log(form)
         if(updateing){
             form.setFieldsValue({
-                name: info.name,
-                desc: info.desc,
-                isChild: info.isChild,
-                parentModule: info.parentModule
+                name: currentModule.name,
+                desc: currentModule.desc,
+                isChild: currentModule.isChild,
+                parentModule: currentModule.parentModule
             })
-            setIsChild(info.isChild)
+            setIsChild(currentModule.isChild)
         }
     }
 
@@ -111,7 +111,7 @@ const ModuleInfo = ({currentModule, modules,createing, reset}) => {
         >
             <Form.Item 
             label="name" name="name" resules={[{required:true,message:"module name"}]}>
-                {createing || updateing?<Input />:<Input disabled />}
+                {createing ?<Input />:<Input disabled />}
             </Form.Item>
             <Form.Item 
             label="decription" name="desc" resules={[{required:true,message:"module description"}]}>

@@ -8,13 +8,12 @@ type Member =
  };
 type CaiVersion = 
  record {
-   cName: text;
    cPid: text;
    cTime: Time;
    desc: text;
+   id: nat;
    name: text;
    size: nat;
-   uName: text;
    uPid: text;
    uTime: Time;
    wasm: vec nat8;
@@ -31,7 +30,7 @@ service : {
   addCanister: (text, text) -> ();
   addCanisterByAdmin: (text, text) -> (bool);
   addOrUpdateModule: (CaiModule) -> ();
-  addVersion: (text, CaiVersion) -> ();
+  addVersion: (text, text, text, vec nat8) -> ();
   adminList: () -> (vec Member);
   canisters: (text) -> (vec text);
   checkAdmin: () -> (text);
@@ -44,5 +43,6 @@ service : {
   setCaiTags: (text, vec text) -> ();
   updateAllCais: (text, text) -> (bool);
   updateTargetCais: (text, text, vec text) -> (bool);
+  updateVersion: (text, nat, text, text, vec nat8) -> (text);
   versions: (text) -> (vec CaiVersion);
 }

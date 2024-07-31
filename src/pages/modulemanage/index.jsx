@@ -70,32 +70,30 @@ const ModuleManage = () => {
         resetSelecter() 
 
         // reset action
-        setCurrentAction('模块信息')
+        setCurrentAction('版本列表')
     }, [currentModule])
 
-    useEffect(()=>{
+    // useEffect(()=>{
         
-        // reset content
-        if(currentAction === '模块信息'){
-            if (modules.length == 0){
-                setContent(<p >请先添加模块</p>)
-            }else{
-                console.log("====")
-                console.log(currentModule)
-                setContent(<ModuleInfo currentModule={currentModule} modules={modules} createing={false} reset={initModules}></ModuleInfo>)
-            }
-            return
-        }
-        if(currentAction === '版本列表'){
-            setContent(<Versions moduleName={currentModule}></Versions>)
-            return
-        }
-        if(currentAction === '容器列表'){
-            setContent(<Canisters moduleName={currentModule}></Canisters>)
-            return
-        }
+    //     // reset content
+    //     if(currentAction === '模块信息'){
+    //         if (modules.length == 0){
+    //             setContent(<p >请先添加模块</p>)
+    //         }else{
+    //             setContent(<ModuleInfo currentModule={currentModule} modules={modules} createing={false} reset={initModules}></ModuleInfo>)
+    //         }
+    //         return
+    //     }
+    //     if(currentAction === '版本列表'){
+    //         setContent(<Versions moduleName={currentModule}></Versions>)
+    //         return
+    //     }
+    //     if(currentAction === '容器列表'){
+    //         setContent(<Canisters moduleName={currentModule}></Canisters>)
+    //         return
+    //     }
         
-    }, [currentModule,currentAction])
+    // }, [currentModule,currentAction])
 
     const menuClick = (e) => {
         setCurrentAction(e.key)
@@ -106,7 +104,6 @@ const ModuleManage = () => {
                 setCurrentModule(item)
             }
         })
-        
     }
     const handleCreate = () => {
         setOpen(true)
@@ -154,15 +151,23 @@ const ModuleManage = () => {
           <div>
             <Menu onClick={menuClick} selectedKeys={[currentAction]} mode="horizontal" items={menus}></Menu>
             <div className='w-full bg-gray1-100'>
-                {content}
+                {/* {content} */}
+                { currentAction == '模块信息' ? 
+                    <ModuleInfo currentModule={currentModule} modules={modules} createing={false} reset={initModules}></ModuleInfo>
+                    :
+                    currentAction == '版本列表' ?
+                    <Versions currentModule={currentModule} refresh={newVersion}></Versions>
+                    :
+                    <Canisters moduleName={currentModule}></Canisters>
+                }
             </div>
           </div>
           <Drawer title="新增模块" onClose={handleCreateClose} open={open}>
-            <ModuleInfo currentModule={currentModule} modules={modules} createing={true} reset={initModules}></ModuleInfo>
+            <ModuleInfo currentModule={{name:'',desc:'',isChild:false,parentModule:''}} modules={modules} createing={true} reset={initModules}></ModuleInfo>
           </Drawer>
           <Drawer title="新增版本" onClose={handleVersionClose} open={newVersion}>
-                <NewVersion moduleName={currentModule} update={false} versionInfo={{}}></NewVersion>
-            </Drawer>
+                <NewVersion moduleName={currentModule.name} update={false} versionInfo={{}} callback={handleVersionClose}></NewVersion>
+          </Drawer>
         </div>
     )
 }

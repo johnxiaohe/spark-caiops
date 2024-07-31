@@ -6,8 +6,14 @@ export const idlFactory = ({ IDL }) => {
     'isChild' : IDL.Bool,
   });
   const Time = IDL.Int;
+  const Member = IDL.Record({
+    'pid' : IDL.Text,
+    'cTime' : Time,
+    'cPid' : IDL.Text,
+    'name' : IDL.Text,
+  });
   const CaiVersion = IDL.Record({
-    'cName' : IDL.Text,
+    'id' : IDL.Nat,
     'cTime' : Time,
     'cPid' : IDL.Text,
     'desc' : IDL.Text,
@@ -15,21 +21,18 @@ export const idlFactory = ({ IDL }) => {
     'size' : IDL.Nat,
     'uPid' : IDL.Text,
     'wasm' : IDL.Vec(IDL.Nat8),
-    'uName' : IDL.Text,
     'uTime' : Time,
-  });
-  const Member = IDL.Record({
-    'pid' : IDL.Text,
-    'cTime' : Time,
-    'cPid' : IDL.Text,
-    'name' : IDL.Text,
   });
   return IDL.Service({
     'addAdmins' : IDL.Func([IDL.Text, IDL.Text], [], []),
     'addCanister' : IDL.Func([IDL.Text, IDL.Text], [], []),
     'addCanisterByAdmin' : IDL.Func([IDL.Text, IDL.Text], [IDL.Bool], []),
     'addOrUpdateModule' : IDL.Func([CaiModule], [], []),
-    'addVersion' : IDL.Func([IDL.Text, CaiVersion], [], []),
+    'addVersion' : IDL.Func(
+        [IDL.Text, IDL.Text, IDL.Text, IDL.Vec(IDL.Nat8)],
+        [],
+        [],
+      ),
     'adminList' : IDL.Func([], [IDL.Vec(Member)], []),
     'canisters' : IDL.Func([IDL.Text], [IDL.Vec(IDL.Text)], []),
     'checkAdmin' : IDL.Func([], [IDL.Text], []),
@@ -44,6 +47,11 @@ export const idlFactory = ({ IDL }) => {
     'updateTargetCais' : IDL.Func(
         [IDL.Text, IDL.Text, IDL.Vec(IDL.Text)],
         [IDL.Bool],
+        [],
+      ),
+    'updateVersion' : IDL.Func(
+        [IDL.Text, IDL.Nat, IDL.Text, IDL.Text, IDL.Vec(IDL.Nat8)],
+        [IDL.Text],
         [],
       ),
     'versions' : IDL.Func([IDL.Text], [IDL.Vec(CaiVersion)], []),

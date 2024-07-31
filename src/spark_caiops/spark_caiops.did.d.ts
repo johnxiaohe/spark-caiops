@@ -9,7 +9,7 @@ export interface CaiModule {
   'isChild' : boolean,
 }
 export interface CaiVersion {
-  'cName' : string,
+  'id' : bigint,
   'cTime' : Time,
   'cPid' : string,
   'desc' : string,
@@ -17,7 +17,6 @@ export interface CaiVersion {
   'size' : bigint,
   'uPid' : string,
   'wasm' : Uint8Array | number[],
-  'uName' : string,
   'uTime' : Time,
 }
 export interface Member {
@@ -32,7 +31,10 @@ export interface _SERVICE {
   'addCanister' : ActorMethod<[string, string], undefined>,
   'addCanisterByAdmin' : ActorMethod<[string, string], boolean>,
   'addOrUpdateModule' : ActorMethod<[CaiModule], undefined>,
-  'addVersion' : ActorMethod<[string, CaiVersion], undefined>,
+  'addVersion' : ActorMethod<
+    [string, string, string, Uint8Array | number[]],
+    undefined
+  >,
   'adminList' : ActorMethod<[], Array<Member>>,
   'canisters' : ActorMethod<[string], Array<string>>,
   'checkAdmin' : ActorMethod<[], string>,
@@ -45,6 +47,10 @@ export interface _SERVICE {
   'setCaiTags' : ActorMethod<[string, Array<string>], undefined>,
   'updateAllCais' : ActorMethod<[string, string], boolean>,
   'updateTargetCais' : ActorMethod<[string, string, Array<string>], boolean>,
+  'updateVersion' : ActorMethod<
+    [string, bigint, string, string, Uint8Array | number[]],
+    string
+  >,
   'versions' : ActorMethod<[string], Array<CaiVersion>>,
 }
 export declare const idlFactory: IDL.InterfaceFactory;
