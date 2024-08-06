@@ -86,6 +86,7 @@ export const AuthProvider = ({children}) =>{
                 pid,
                 username,
                 mainActor,
+                agent,
             }}
         >
             {children}

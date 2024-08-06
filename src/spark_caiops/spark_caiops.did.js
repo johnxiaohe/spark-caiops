@@ -18,7 +18,6 @@ export const idlFactory = ({ IDL }) => {
     'cPid' : IDL.Text,
     'desc' : IDL.Text,
     'name' : IDL.Text,
-    'size' : IDL.Nat,
     'uPid' : IDL.Text,
     'wasm' : IDL.Vec(IDL.Nat8),
     'uTime' : Time,
@@ -54,6 +53,7 @@ export const idlFactory = ({ IDL }) => {
         [IDL.Text],
         [],
       ),
+    'version' : IDL.Func([], [IDL.Text], []),
     'versions' : IDL.Func([IDL.Text], [IDL.Vec(CaiVersion)], []),
   });
 };

@@ -70,7 +70,7 @@ const ModuleManage = () => {
         resetSelecter() 
 
         // reset action
-        setCurrentAction('版本列表')
+        setCurrentAction('容器列表')
     }, [currentModule])
 
     // useEffect(()=>{
@@ -158,7 +158,7 @@ const ModuleManage = () => {
                     currentAction == '版本列表' ?
                     <Versions currentModule={currentModule} refresh={newVersion}></Versions>
                     :
-                    <Canisters moduleName={currentModule}></Canisters>
+                    <Canisters moduleName={currentModule.name}></Canisters>
                 }
             </div>
           </div>

@@ -43,7 +43,6 @@ const ModuleInfo = ({currentModule, modules,createing, reset}) => {
             // console.log("init update module info")
             setIsChild(currentModule.isChild)
         }
-
         let parentSelects = modules.map(item =>{
             return {
                 value: item.name,
@@ -52,7 +51,7 @@ const ModuleInfo = ({currentModule, modules,createing, reset}) => {
         })
         setParents(parentSelects)
 
-    },[])
+    },[currentModule])
 
     useEffect(()=>{
         // console.log(isChild)

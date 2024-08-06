@@ -14,7 +14,6 @@ export interface CaiVersion {
   'cPid' : string,
   'desc' : string,
   'name' : string,
-  'size' : bigint,
   'uPid' : string,
   'wasm' : Uint8Array | number[],
   'uTime' : Time,
@@ -51,6 +50,7 @@ export interface _SERVICE {
     [string, bigint, string, string, Uint8Array | number[]],
     string
   >,
+  'version' : ActorMethod<[], string>,
   'versions' : ActorMethod<[string], Array<CaiVersion>>,
 }
 export declare const idlFactory: IDL.InterfaceFactory;
