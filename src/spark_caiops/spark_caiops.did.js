@@ -12,6 +12,17 @@ export const idlFactory = ({ IDL }) => {
     'cPid' : IDL.Text,
     'name' : IDL.Text,
   });
+  const Canister = IDL.Record({
+    'cid' : IDL.Text,
+    'owner' : IDL.Text,
+    'version' : IDL.Text,
+  });
+  const CaisPageResp = IDL.Record({
+    'data' : IDL.Vec(Canister),
+    'page' : IDL.Int,
+    'count' : IDL.Int,
+    'size' : IDL.Int,
+  });
   const CaiVersion = IDL.Record({
     'id' : IDL.Nat,
     'cTime' : Time,
@@ -33,7 +44,7 @@ export const idlFactory = ({ IDL }) => {
         [],
       ),
     'adminList' : IDL.Func([], [IDL.Vec(Member)], []),
-    'canisters' : IDL.Func([IDL.Text], [IDL.Vec(IDL.Text)], []),
+    'canisters' : IDL.Func([IDL.Text, IDL.Nat, IDL.Nat], [CaisPageResp], []),
     'checkAdmin' : IDL.Func([], [IDL.Text], []),
     'delCanister' : IDL.Func([IDL.Text, IDL.Text], [], []),
     'delCanisterByAdmin' : IDL.Func([IDL.Text, IDL.Text], [IDL.Bool], []),

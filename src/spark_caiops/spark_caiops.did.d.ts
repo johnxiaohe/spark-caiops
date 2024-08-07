@@ -18,6 +18,17 @@ export interface CaiVersion {
   'wasm' : Uint8Array | number[],
   'uTime' : Time,
 }
+export interface CaisPageResp {
+  'data' : Array<Canister>,
+  'page' : bigint,
+  'count' : bigint,
+  'size' : bigint,
+}
+export interface Canister {
+  'cid' : string,
+  'owner' : string,
+  'version' : string,
+}
 export interface Member {
   'pid' : string,
   'cTime' : Time,
@@ -35,7 +46,7 @@ export interface _SERVICE {
     undefined
   >,
   'adminList' : ActorMethod<[], Array<Member>>,
-  'canisters' : ActorMethod<[string], Array<string>>,
+  'canisters' : ActorMethod<[string, bigint, bigint], CaisPageResp>,
   'checkAdmin' : ActorMethod<[], string>,
   'delCanister' : ActorMethod<[string, string], undefined>,
   'delCanisterByAdmin' : ActorMethod<[string, string], boolean>,

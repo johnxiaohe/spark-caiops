@@ -6,6 +6,19 @@ type Member =
    name: text;
    pid: text;
  };
+type Canister = 
+ record {
+   cid: text;
+   owner: text;
+   version: text;
+ };
+type CaisPageResp = 
+ record {
+   count: int;
+   data: vec Canister;
+   page: int;
+   size: int;
+ };
 type CaiVersion = 
  record {
    cPid: text;
@@ -31,7 +44,7 @@ service : {
   addOrUpdateModule: (CaiModule) -> ();
   addVersion: (text, text, text, vec nat8) -> ();
   adminList: () -> (vec Member);
-  canisters: (text) -> (vec text);
+  canisters: (text, nat, nat) -> (CaisPageResp);
   checkAdmin: () -> (text);
   delCanister: (text, text) -> ();
   delCanisterByAdmin: (text, text) -> (bool);
