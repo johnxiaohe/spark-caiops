@@ -14,8 +14,8 @@ export interface CaiVersion {
   'cPid' : string,
   'desc' : string,
   'name' : string,
+  'size' : bigint,
   'uPid' : string,
-  'wasm' : Uint8Array | number[],
   'uTime' : Time,
 }
 export interface CaisPageResp {
@@ -51,12 +51,13 @@ export interface _SERVICE {
   'delCanister' : ActorMethod<[string, string], undefined>,
   'delCanisterByAdmin' : ActorMethod<[string, string], boolean>,
   'delModule' : ActorMethod<[string], undefined>,
+  'getwasm' : ActorMethod<[string, bigint], Uint8Array | number[]>,
   'initChilds' : ActorMethod<[string], undefined>,
   'modules' : ActorMethod<[], Array<CaiModule>>,
   'setCaiDesc' : ActorMethod<[string, string], undefined>,
   'setCaiTags' : ActorMethod<[string, Array<string>], undefined>,
-  'updateAllCais' : ActorMethod<[string, string], boolean>,
-  'updateTargetCais' : ActorMethod<[string, string, Array<string>], boolean>,
+  'updateAllCais' : ActorMethod<[string, bigint], boolean>,
+  'updateTargetCais' : ActorMethod<[string, bigint, Array<string>], boolean>,
   'updateVersion' : ActorMethod<
     [string, bigint, string, string, Uint8Array | number[]],
     string

@@ -16,12 +16,12 @@ const Versions = ({currentModule, refresh}) => {
 
     const initVersions = async () => {
         const versions = await mainActor.versions(currentModule.name)
-        // console.log(versions)
+        console.log(versions)
         versions.forEach(element => {
             element.key = element.id
             element.createTime = timeFormat(element.cTime)
             element.updateTime = timeFormat(element.uTime)
-            element.size = element.wasm.length
+            element.size = Number(element.size)
         });
         setList(versions)
     }

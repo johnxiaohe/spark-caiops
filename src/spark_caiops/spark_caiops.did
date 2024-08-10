@@ -26,9 +26,9 @@ type CaiVersion =
    desc: text;
    id: nat;
    name: text;
+   size: nat;
    uPid: text;
    uTime: Time;
-   wasm: vec nat8;
  };
 type CaiModule = 
  record {
@@ -49,12 +49,13 @@ service : {
   delCanister: (text, text) -> ();
   delCanisterByAdmin: (text, text) -> (bool);
   delModule: (text) -> ();
+  getwasm: (text, nat) -> (vec nat8);
   initChilds: (text) -> ();
   modules: () -> (vec CaiModule);
   setCaiDesc: (text, text) -> ();
   setCaiTags: (text, vec text) -> ();
-  updateAllCais: (text, text) -> (bool);
-  updateTargetCais: (text, text, vec text) -> (bool);
+  updateAllCais: (text, nat) -> (bool);
+  updateTargetCais: (text, nat, vec text) -> (bool);
   updateVersion: (text, nat, text, text, vec nat8) -> (text);
   version: () -> (text);
   versions: (text) -> (vec CaiVersion);

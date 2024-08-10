@@ -29,8 +29,8 @@ export const idlFactory = ({ IDL }) => {
     'cPid' : IDL.Text,
     'desc' : IDL.Text,
     'name' : IDL.Text,
+    'size' : IDL.Nat,
     'uPid' : IDL.Text,
-    'wasm' : IDL.Vec(IDL.Nat8),
     'uTime' : Time,
   });
   return IDL.Service({
@@ -49,13 +49,14 @@ export const idlFactory = ({ IDL }) => {
     'delCanister' : IDL.Func([IDL.Text, IDL.Text], [], []),
     'delCanisterByAdmin' : IDL.Func([IDL.Text, IDL.Text], [IDL.Bool], []),
     'delModule' : IDL.Func([IDL.Text], [], []),
+    'getwasm' : IDL.Func([IDL.Text, IDL.Nat], [IDL.Vec(IDL.Nat8)], []),
     'initChilds' : IDL.Func([IDL.Text], [], []),
     'modules' : IDL.Func([], [IDL.Vec(CaiModule)], []),
     'setCaiDesc' : IDL.Func([IDL.Text, IDL.Text], [], []),
     'setCaiTags' : IDL.Func([IDL.Text, IDL.Vec(IDL.Text)], [], []),
-    'updateAllCais' : IDL.Func([IDL.Text, IDL.Text], [IDL.Bool], []),
+    'updateAllCais' : IDL.Func([IDL.Text, IDL.Nat], [IDL.Bool], []),
     'updateTargetCais' : IDL.Func(
-        [IDL.Text, IDL.Text, IDL.Vec(IDL.Text)],
+        [IDL.Text, IDL.Nat, IDL.Vec(IDL.Text)],
         [IDL.Bool],
         [],
       ),

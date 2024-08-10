@@ -114,7 +114,7 @@ const NewVersion = ({moduleName, update, versionInfo, callback}) => {
             </Form.Item>
             <Form.Item 
             label="wasm" name="wasm" resules={[{required:true}]}>
-                <Upload {...uploadProps} maxCount={1} accept=".jsx">
+                <Upload {...uploadProps} maxCount={1} accept=".wasm">
                     <Button icon={<UploadOutlined />}>Upgrade</Button>
                 </Upload>
             </Form.Item>
