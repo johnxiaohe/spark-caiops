@@ -75,6 +75,7 @@ const Canisters = ({moduleName}) => {
         }else{
             setUpdateMsg("Update "+ cid + " Canister to this Version?")
         }
+        setVersions([])
         setOpenUpdate(true)
         const versions = await mainActor.versions(moduleName)
         versions.forEach(element => {
