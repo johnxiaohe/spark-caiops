@@ -70,7 +70,7 @@ const ModuleManage = () => {
         resetSelecter() 
 
         // reset action
-        setCurrentAction('容器列表')
+        setCurrentAction('模块信息')
     }, [currentModule])
 
     // useEffect(()=>{

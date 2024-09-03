@@ -1,0 +1,16 @@
+{
+    "canisters": {
+        "spark_caiops_frontend":{
+            "frontend": {
+              "entrypoint": "index.html"
+            },
+            "source": [
+              "src/assets",
+              "dist/"
+            ],
+            "type": "assets"
+          }
+    },
+    "output_env_file": ".env",
+    "version": 1
+}
